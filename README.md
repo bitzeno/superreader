@@ -1,8 +1,9 @@
 # SuperReader
 
-A Chrome extension that reads any webpage aloud using the OpenAI TTS API, with
-**synchronized sentence + word highlighting** so you can follow along. Adjust
-reading speed and switch voices on the fly.
+A Chrome extension that reads any webpage aloud while **highlighting each
+sentence and word as it's spoken**. The synchronized audio and text helps
+with focus and absorption, and lets you read faster than you would
+silently.
 
 ![SuperReader in action — sentence highlighted in the article with the floating widget showing playback controls, speed, and voice selector](assets/screenshot.png)
 
