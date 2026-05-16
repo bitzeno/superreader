@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SuperReader Options</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font: 14px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: #18181b;
+      color: #f4f4f5;
+      padding: 40px 20px;
+    }
+    .wrap { max-width: 520px; margin: 0 auto; }
+    h1 { font-size: 22px; margin-bottom: 4px; }
+    .sub { color: rgba(255,255,255,0.55); font-size: 13px; margin-bottom: 28px; }
+    .card {
+      background: #212124;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card h2 { font-size: 14px; margin-bottom: 14px; }
+    label { display: block; font-size: 12px; color: rgba(255,255,255,0.7); margin-bottom: 6px; }
+    input[type="text"], input[type="password"], select {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      color: #f4f4f5;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 9px 11px;
+      font-size: 13px;
+    }
+    select option { background: #1a1a1a; }
+    .row { margin-bottom: 16px; }
+    .row:last-child { margin-bottom: 0; }
+    .inline { display: flex; align-items: center; gap: 10px; }
+    .inline input[type="checkbox"] { width: 16px; height: 16px; }
+    .inline label { margin-bottom: 0; }
+    .key-row { display: flex; gap: 8px; }
+    .key-row input { flex: 1; }
+    button {
+      background: #ffc400;
+      color: #1a1a1a;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 16px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    button:hover { background: #ffd233; }
+    button.secondary {
+      background: rgba(255,255,255,0.08);
+      color: #f4f4f5;
+    }
+    button.secondary:hover { background: rgba(255,255,255,0.16); }
+    .hint { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 6px; }
+    .hint a { color: #ffc400; }
+    #status {
+      margin-top: 14px;
+      font-size: 12px;
+      min-height: 16px;
+    }
+    .ok { color: #86efac; }
+    .err { color: #fecaca; }
+    .range-row { display: flex; align-items: center; gap: 12px; }
+    .range-row input[type="range"] { flex: 1; }
+    .range-val { font-variant-numeric: tabular-nums; min-width: 44px; text-align: right; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>SuperReader</h1>
+    <div class="sub">Read any webpage aloud with synchronized highlighting.</div>
+
+    <div class="card">
+      <h2>OpenAI API key</h2>
+      <div class="row">
+        <label for="apiKey">Your key is stored locally in this browser and sent only to api.openai.com.</label>
+        <div class="key-row">
+          <input type="password" id="apiKey" placeholder="sk-...">
+          <button class="secondary" id="toggleKey" type="button">Show</button>
+        </div>
+        <div class="hint">
+          Get a key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a>.
+        </div>
+      </div>
+      <button id="testKey" type="button">Test &amp; save key</button>
+    </div>
+
+    <div class="card">
+      <h2>Defaults</h2>
+      <div class="row">
+        <label for="voice">Voice</label>
+        <select id="voice"></select>
+      </div>
+      <div class="row">
+        <label for="model">Quality / model</label>
+        <select id="model"></select>
+      </div>
+      <div class="row">
+        <label for="speed">Reading speed</label>
+        <div class="range-row">
+          <input type="range" id="speed" min="0.5" max="3" step="0.05">
+          <span class="range-val" id="speedVal">1.00×</span>
+        </div>
+      </div>
+      <div class="row inline">
+        <input type="checkbox" id="autoScroll">
+        <label for="autoScroll">Auto-scroll to keep the current sentence in view</label>
+      </div>
+      <div class="row inline">
+        <input type="checkbox" id="highlightWords">
+        <label for="highlightWords">Highlight individual words while reading</label>
+      </div>
+    </div>
+
+    <div id="status"></div>
+  </div>
+
+  <script src="../lib/utils.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

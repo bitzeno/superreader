@@ -1,0 +1,46 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cursor/
+.claude/
+
+# Node (in case tooling is added later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment / secrets
+.env
+.env.*
+*.pem
+*.key
+secrets.json
+
+# Build artifacts
+dist/
+build/
+*.zip
+*.crx
+*.pem
+
+# Logs
+*.log
+logs/
+
+# OS / misc
+Thumbs.db
+ehthumbs.db
+Desktop.ini

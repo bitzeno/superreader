@@ -1,0 +1,161 @@
+/* CSS Custom Highlight API styles. ::highlight() is namespaced and high-spec. */
+::highlight(sr-sentence) {
+  background-color: rgba(255, 222, 89, 0.35);
+  color: inherit;
+}
+
+::highlight(sr-word) {
+  background-color: rgba(255, 196, 0, 0.85);
+  color: #1a1a1a;
+}
+
+/* Floating in-page widget */
+#sr-widget {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2147483647;
+  width: 320px;
+  background: rgba(20, 20, 22, 0.96);
+  color: #f4f4f5;
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45),
+              0 2px 8px rgba(0, 0, 0, 0.3);
+  font: 13px/1.45 -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  user-select: none;
+  cursor: default;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+#sr-widget.sr-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+#sr-widget * { box-sizing: border-box; }
+
+.sr-widget-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.sr-widget-title {
+  font-weight: 600;
+  font-size: 13px;
+  flex: 1;
+  letter-spacing: 0.3px;
+}
+
+.sr-widget-status {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-widget-close {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.sr-widget-close:hover { color: white; background: rgba(255, 255, 255, 0.1); }
+
+.sr-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.sr-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #f4f4f5;
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  transition: background 0.12s ease;
+  min-width: 32px;
+}
+.sr-btn:hover { background: rgba(255, 255, 255, 0.18); }
+.sr-btn:active { background: rgba(255, 255, 255, 0.25); }
+.sr-btn-primary {
+  background: #ffc400;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+.sr-btn-primary:hover { background: #ffd233; }
+
+.sr-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.sr-row label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  min-width: 42px;
+}
+
+.sr-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 2px;
+  outline: none;
+}
+.sr-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #ffc400;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.sr-select {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f4f4f5;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.sr-select option { background: #1a1a1a; color: #f4f4f5; }
+
+.sr-value {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.85);
+  min-width: 32px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-error {
+  margin-top: 8px;
+  padding: 6px 8px;
+  background: rgba(220, 38, 38, 0.18);
+  color: #fecaca;
+  border-radius: 6px;
+  font-size: 11px;
+  word-break: break-word;
+}

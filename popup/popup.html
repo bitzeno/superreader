@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="header">
+    <span class="logo">SuperReader</span>
+    <span class="status" id="status">idle</span>
+  </div>
+
+  <div id="needs-key" class="notice" style="display:none">
+    No OpenAI API key set.
+    <a href="#" id="open-options">Add one in options →</a>
+  </div>
+
+  <div id="main">
+    <div class="controls">
+      <button class="btn" id="prev" title="Previous sentence">⏮</button>
+      <button class="btn btn-primary" id="playpause" title="Play / Pause">▶ Read page</button>
+      <button class="btn" id="next" title="Next sentence">⏭</button>
+      <button class="btn" id="stop" title="Stop">■</button>
+    </div>
+
+    <div class="field">
+      <label for="speed">Speed <span id="speed-val">1.00×</span></label>
+      <input type="range" id="speed" min="0.5" max="3" step="0.05" value="1">
+    </div>
+
+    <div class="field">
+      <label for="voice">Voice</label>
+      <select id="voice"></select>
+    </div>
+
+    <div class="field">
+      <label for="model">Quality</label>
+      <select id="model"></select>
+    </div>
+
+    <div id="error" class="error" style="display:none"></div>
+  </div>
+
+  <div class="footer">
+    <a href="#" id="footer-options">Options</a>
+    <span class="hint">Alt+Shift+R to toggle</span>
+  </div>
+
+  <script src="../lib/utils.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
