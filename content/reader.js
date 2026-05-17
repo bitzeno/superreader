@@ -42,6 +42,7 @@
       this._gen = 0;
       this._consecutiveErrors = 0;
       this._lastFetchSig = null; // invalidates in-flight when settings change
+      this._jumpHandlers = null; // {click, keydown, keyup, blur} for alt-click jump
     }
 
     // ── lifecycle ──────────────────────────────────────────────────────────
@@ -135,11 +136,13 @@
       this.widget?.setProgress(-1, 0);
       this.widget?.showError('');
       this.state = 'idle';
+      document.documentElement?.classList.remove('sr-jump-mode');
     }
 
     destroy() {
       this._reset();
       this.state = 'idle';
+      this._removeJumpHandlers();
       this.widget?.destroy();
       this.widget = null;
       this.highlighter?.destroy();
@@ -158,6 +161,18 @@
     skipPrev() {
       if (!this.sentences.length) return;
       this._goto(Math.max(0, this.idx - 1));
+    }
+
+    jumpToPoint(x, y) {
+      if (!this.sentences.length) return false;
+      if (this.state !== 'playing' && this.state !== 'paused') return false;
+      const i = this._findSentenceAtPoint(x, y);
+      if (i < 0 || i === this.idx) return false;
+      const wasPaused = this.state === 'paused';
+      this._goto(i).then(() => {
+        if (wasPaused) this.pause();
+      });
+      return true;
     }
 
     setRate(rate) {
@@ -195,6 +210,80 @@
         onClose: () => this.destroy(),
       });
       this.widget.mount({ rate: this.settings.speed, voice: this.settings.voice });
+      this._installJumpHandlers();
+    }
+
+    // Alt-click anywhere on a sentence to restart reading from there.
+    // Plain click is left alone so links, buttons, and text selection still work.
+    _installJumpHandlers() {
+      if (this._jumpHandlers) return;
+
+      const setJumpMode = (on) => {
+        const root = document.documentElement;
+        if (!root) return;
+        if (on && (this.state === 'playing' || this.state === 'paused')) {
+          root.classList.add('sr-jump-mode');
+        } else {
+          root.classList.remove('sr-jump-mode');
+        }
+      };
+
+      const onKeyDown = (e) => { if (e.altKey) setJumpMode(true); };
+      const onKeyUp = (e) => { if (!e.altKey) setJumpMode(false); };
+      const onBlur = () => setJumpMode(false);
+
+      const onClick = (e) => {
+        if (!e.altKey) return;
+        // Don't hijack clicks on our own widget.
+        if (e.target && e.target.closest && e.target.closest('#sr-widget')) return;
+        if (this.jumpToPoint(e.clientX, e.clientY)) {
+          // Prevent the alt-click from also activating a link/button underneath.
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      };
+
+      // Capture phase so we beat page handlers (and pages that stopPropagation).
+      window.addEventListener('keydown', onKeyDown, true);
+      window.addEventListener('keyup', onKeyUp, true);
+      window.addEventListener('blur', onBlur);
+      document.addEventListener('click', onClick, true);
+
+      this._jumpHandlers = { onKeyDown, onKeyUp, onBlur, onClick };
+    }
+
+    _removeJumpHandlers() {
+      const h = this._jumpHandlers;
+      if (!h) return;
+      window.removeEventListener('keydown', h.onKeyDown, true);
+      window.removeEventListener('keyup', h.onKeyUp, true);
+      window.removeEventListener('blur', h.onBlur);
+      document.removeEventListener('click', h.onClick, true);
+      document.documentElement?.classList.remove('sr-jump-mode');
+      this._jumpHandlers = null;
+    }
+
+    // Map a viewport point to a sentence index by asking the browser for the
+    // caret position under the point, then finding which sentence range
+    // contains that (node, offset) pair.
+    _findSentenceAtPoint(x, y) {
+      let node = null, offset = 0;
+      if (document.caretPositionFromPoint) {
+        const p = document.caretPositionFromPoint(x, y);
+        if (p) { node = p.offsetNode; offset = p.offset; }
+      } else if (document.caretRangeFromPoint) {
+        const r = document.caretRangeFromPoint(x, y);
+        if (r) { node = r.startContainer; offset = r.startOffset; }
+      }
+      if (!node) return -1;
+      for (let i = 0; i < this.sentences.length; i++) {
+        const r = this.sentences[i].range;
+        if (!r) continue;
+        try {
+          if (r.comparePoint(node, offset) === 0) return i;
+        } catch (e) { /* point not comparable to this range */ }
+      }
+      return -1;
     }
 
     async _loadSettings() {

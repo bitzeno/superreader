@@ -9,6 +9,23 @@
   color: #1a1a1a;
 }
 
+/* Alt held while reading: hint that clicking will jump there. */
+html.sr-jump-mode,
+html.sr-jump-mode body,
+html.sr-jump-mode * {
+  cursor: pointer !important;
+}
+html.sr-jump-mode #sr-widget,
+html.sr-jump-mode #sr-widget * {
+  cursor: default !important;
+}
+html.sr-jump-mode #sr-widget .sr-btn,
+html.sr-jump-mode #sr-widget .sr-slider,
+html.sr-jump-mode #sr-widget .sr-select,
+html.sr-jump-mode #sr-widget .sr-widget-close {
+  cursor: pointer !important;
+}
+
 /* Floating in-page widget */
 #sr-widget {
   position: fixed;
